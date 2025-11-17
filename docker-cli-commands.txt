@@ -1,0 +1,101 @@
+After you have installed kafka on your system, test docker by creating test topics:
+
+Topic Creation
+--------------------------------------------------------
+docker exec -it kafka1 kafka-topics \
+  --create \
+  --topic test-topic \
+  --bootstrap-server kafka1:9092 \
+  --replication-factor 3 \
+  --partitions 3
+--------------------------------------------------------
+
+Listing Created Topics
+--------------------------------------------------------
+docker exec -it kafka1 kafka-topics --list --bootstrap-server kafka1:9092
+--------------------------------------------------------
+
+Produce Test Messages
+--------------------------------------------------------
+docker exec -it kafka1 kafka-console-producer \
+  --bootstrap-server kafka1:9092 \
+  --topic test-topic
+
+"Hello Kafka
+This is awesome"
+--------------------------------------------------------
+
+Consume your messages
+--------------------------------------------------------
+docker exec -it kafka2 kafka-console-consumer \
+  --bootstrap-server kafka2:9092 \
+  --topic test-topic \
+  --from-beginning
+--------------------------------------------------------
+
+######################################################################################
+
+Topic Creation for my project
+
+-- RACING GAMES --
+
+docker exec -it kafka1 kafka-topics \
+  --create \
+  --topic racing_games \
+  --partitions 3 \
+  --replication-factor 3 \
+  --bootstrap-server kafka1:9092
+
+  docker exec -it kafka1 kafka-topics --create --topic racing_games --partitions 3 --replication-factor 3 --bootstrap-server kafka1:9092
+
+-- SHOOTER GAMES --
+
+docker exec -it kafka1 kafka-topics \
+  --create \
+  --topic shooter_games \
+  --partitions 3 \
+  --replication-factor 3 \
+  --bootstrap-server kafka1:9092
+
+  docker exec -it kafka1 kafka-topics --create --topic shooter_games --partitions 3 --replication-factor 3 --bootstrap-server kafka1:9092
+
+--  STRATEGY GAMES --
+
+docker exec -it kafka1 kafka-topics \
+  --create \
+  --topic strategy_games \
+  --partitions 3 \
+  --replication-factor 3 \
+  --bootstrap-server kafka1:9092
+
+  docker exec -it kafka1 kafka-topics --create --topic strategy_games --partitions 3 --replication-factor 3 --bootstrap-server kafka1:9092
+
+######################################################################################
+
+To stop docker containers
+
+docker compose stop
+
+######################################################################################
+
+Checking Re-balancing
+
+docker exec -it kafka2 kafka-topics --bootstrap-server kafka1:9092 --describe --topic racing_games
+
+docker stop kafka2
+
+docker exec -it kafka1 kafka-topics --bootstrap-server kafka1:9092 --describe --topic racing_games
+
+docker start kafka2
+
+docker exec -it kafka1 kafka-topics --bootstrap-server kafka1:9092 --describe --topic racing_games
+
+
+docker exec -it kafka1 kafka-leader-election \
+  --bootstrap-server kafka1:9092 \
+  --election-type PREFERRED \
+  --all-topic-partitions
+
+docker exec -it kafka1 kafka-leader-election --bootstrap-server kafka1:9092 --election-type PREFERRED --all-topic-partitions
+
+docker exec -it kafka1 kafka-topics --bootstrap-server kafka1:9092 --describe
